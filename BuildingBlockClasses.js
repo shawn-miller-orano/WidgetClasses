@@ -420,7 +420,6 @@ class LiveTable {
     }
 
     generateRequestObject() {
-        this
         this.httpRequest = new MultipleReturnRequestLive(
             this.authKey,
             this.returnRowType,
