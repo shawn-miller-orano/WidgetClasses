@@ -362,6 +362,11 @@ class LiveTable {
         this.returnRowType = returnRowType;
     }
 
+    simpleFunction() {
+        console.log("testThing");
+        this.testString = "testThingTwo";
+    }
+
     checkForExistingAgg(columnName, aggType) {
         for (let i = 0; i < this.aggregations.length; i++) {
             if (this.aggregations[i].constructor.name == aggType) {
