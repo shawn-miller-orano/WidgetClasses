@@ -342,8 +342,9 @@ class LiveUserTable {
 }
 
 class LiveTable {
-    constructor(tableKeyCode, returnRowType) {
+    constructor(tableKeyCode, returnRowType,authKey) {
         this.activeRows = [];
+        this.authKey = authKey;
         this.setReturnType = this.setReturnType.bind(this);
         this.addRecord = this.addRecord.bind(this);
         this.generateRequestObject = this.generateRequestObject.bind(this);
@@ -399,7 +400,7 @@ class LiveTable {
             tableRequest.open("POST", requestString);
             tableRequest.setRequestHeader(
                 "Authorization",
-                authKey
+                this.authKey
             );
 
             //this.tableRequest.responseType = "json";
@@ -414,7 +415,9 @@ class LiveTable {
     }
 
     generateRequestObject() {
+        this
         this.httpRequest = new MultipleReturnRequestLive(
+            this.authKey,
             this.returnRowType,
             this.activeRows,
             this.tableKeyCode,
@@ -515,10 +518,11 @@ class LiveTable {
 }
 
 class RowsForTableColumnMatchRequest {
-    constructor() {
+    constructor(authKey) {
         this.buildRequest = this.buildRequest.bind(this);
         this.sendRequest = this.sendRequest.bind(this);
         this.addVars = this.addVars.bind(this);
+        this.authKey = authKey;
         this.matchingRows = [];
 
         this.requestFinishedFlag = false;
@@ -593,7 +597,7 @@ class RowsForTableColumnMatchRequest {
         this.tableRequest.open("GET", this.wholeString);
         this.tableRequest.setRequestHeader(
             "Authorization",
-            authKey
+            this.authKey
         );
         this.tableRequest.responseType = "json";
     }
@@ -852,6 +856,7 @@ class MultipleReturnRequest extends RowsForTableColumnMatchRequest {
 }
 class MultipleReturnRequestLive extends RowsForTableColumnMatchRequest {
     constructor(
+        authKey,
         rowObjectType,
         rVar,
         tableCodeString,
@@ -860,7 +865,7 @@ class MultipleReturnRequestLive extends RowsForTableColumnMatchRequest {
         functionTypeStringArray,
         parentLiveTable
     ) {
-        super();
+        super(authKey);
         this.addVars(
             rowObjectType,
             rVar,
@@ -871,6 +876,7 @@ class MultipleReturnRequestLive extends RowsForTableColumnMatchRequest {
             functionTypeStringArray
         );
         this.parentLiveTable = parentLiveTable;
+        tis.authKey = authKey;
         this.pushUpdate = this.pushUpdate.bind(this);
         this.buildRequest();
         this.sendRequest();
