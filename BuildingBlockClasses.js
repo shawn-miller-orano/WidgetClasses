@@ -353,13 +353,22 @@ class LiveTable {
         this.emit = this.emit.bind(this);
         this.checkForExistingAgg = this.checkForExistingAgg.bind(this);
         this.recordChanged = this.recordChanged.bind(this);
+        this.addPrefilter = this.addPrefilter.bind(this);
+
+        
 
         this.subscribers = [];
 
         this.aggregations = [];
 
+        this.prefilterColumns = [];
+        this.prefilterValues = [];
+        this.prefilterFunctions = [];
+
         this.tableKeyCode = tableKeyCode;
         this.returnRowType = returnRowType;
+
+        this.testerObject = eval(`new ${this.returnRowType}();`);
     }
 
     simpleFunction() {
@@ -377,6 +386,14 @@ class LiveTable {
         }
 
         return null;
+    }
+    
+    
+    addPrefilter(prefilterObject) {
+        console.log(this.testerObject[prefilterObject.columnName]);
+        this.prefilterColumns.push(this.testerObject[prefilterObject.columnName].columnKeyCode);
+        this.prefilterValues.push(prefilterObject.columnValue);
+        this.prefilterFunctions.push(prefilterObject.functionType);
     }
 
     addRecord(recordJSON, rowObject) {
@@ -425,9 +442,9 @@ class LiveTable {
             this.returnRowType,
             this.activeRows,
             this.tableKeyCode,
-            [],
-            [],
-            [],
+            this.prefilterColumns,
+            this.prefilterValues,
+            this.prefilterFunctions,
             this
         );
     }
@@ -880,7 +897,7 @@ class MultipleReturnRequestLive extends RowsForTableColumnMatchRequest {
             functionTypeStringArray
         );
         this.parentLiveTable = parentLiveTable;
-        tis.authKey = authKey;
+        this.authKey = authKey;
         this.pushUpdate = this.pushUpdate.bind(this);
         this.buildRequest();
         this.sendRequest();
@@ -1143,7 +1160,7 @@ class RecordOfID extends LiveAggregation {
         super(parentLiveTable, "id");
         this.checkValue = idValue;
         this.aggregate = this.aggregate.bind(this);
-        this.value = [];
+        this.value = null;
         this.parentLiveTable.aggregations.push(this);
         parentLiveTable.subscribe((rows) => this.aggregate(rows));
     }
@@ -1313,8 +1330,10 @@ class TSN extends LiveRecord {
         this.columns = [];
         this.id = new LiveCell(this.tableKeyCode, "id");
         this.columns.push(this.id);
-        this.projectNumber = new LiveCell(this.tableKeyCode, "upcqk_project_number");
-        this.columns.push(this.projectNumber);
+        this.project = new LiveCell(this.tableKeyCode, "upcqk_project_number");
+        this.columns.push(this.project);
+        this.masterTraveler = new LiveCell(this.tableKeyCode, "gvuqy_traveler_name_no");
+        this.columns.push(this.masterTraveler);
         this.status = new LiveCell(this.tableKeyCode, "aqtou_status");
         this.columns.push(this.status);
     }
@@ -1330,6 +1349,10 @@ class MasterTask extends LiveRecord {
         this.columns.push(this.id);
         this.operatingGroup = new LiveCell(this.tableKeyCode, "orero_operating_group");
         this.columns.push(this.operatingGroup);
+        this.project = new LiveCell(this.tableKeyCode, "qkfaf_project");
+        this.columns.push(this.project);
+        this.masterTraveler = new LiveCell(this.tableKeyCode, "sgagi_master_traveler");
+        this.columns.push(this.masterTraveler);
         this.opFamily = new LiveCell(this.tableKeyCode, "rfktf_op_family");
         this.columns.push(this.opFamily);
         this.standardTime = new LiveCell(this.tableKeyCode, "jmixs_standard_time");
@@ -1390,6 +1413,7 @@ class TaskAssignment extends LiveRecord {
         ];
     }
 }
+
 
 class Task extends LiveRecord {
     static instances = [];
@@ -2589,17 +2613,19 @@ class CustomPage {
 
 
     updateBackground(color) {
-        if (color.constructor.name == "Color") {
-            let rgbaString = "rgba("
-            rgbaString = rgbaString.concat(color.r.value);
-            rgbaString = rgbaString.concat(",");
-            rgbaString = rgbaString.concat(color.g.value);
-            rgbaString = rgbaString.concat(",");
-            rgbaString = rgbaString.concat(color.b.value);
-            rgbaString = rgbaString.concat(",");
-            rgbaString = rgbaString.concat(color.a.value);
-            rgbaString = rgbaString.concat(")");
-            this.el.style.backgroundColor = rgbaString;
+        if (color != null) {
+            if (color.constructor.name == "Color") {
+                let rgbaString = "rgba("
+                rgbaString = rgbaString.concat(color.r.value);
+                rgbaString = rgbaString.concat(",");
+                rgbaString = rgbaString.concat(color.g.value);
+                rgbaString = rgbaString.concat(",");
+                rgbaString = rgbaString.concat(color.b.value);
+                rgbaString = rgbaString.concat(",");
+                rgbaString = rgbaString.concat(color.a.value);
+                rgbaString = rgbaString.concat(")");
+                this.el.style.backgroundColor = rgbaString;
+            }
         }
 
     }
