@@ -1347,6 +1347,8 @@ class MasterTask extends LiveRecord {
         this.columns = [];
         this.id = new LiveCell(this.tableKeyCode, "id");
         this.columns.push(this.id);
+        this.desc = new LiveCell(this.tableKeyCode, "huygv_description");
+        this.columns.push(this.desc);
         this.operatingGroup = new LiveCell(this.tableKeyCode, "orero_operating_group");
         this.columns.push(this.operatingGroup);
         this.project = new LiveCell(this.tableKeyCode, "qkfaf_project");
