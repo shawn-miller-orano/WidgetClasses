@@ -2856,7 +2856,7 @@ class NewRecordForm extends Popup {
         let postFilterColumnNames = [];
 
         for(let j = 0; j < this.parentTableWindow.postFilters.length; j++) {
-            postFilterColumnNames.push(this.parentTableWindow.postFilters[i].columnName);
+            postFilterColumnNames.push(this.parentTableWindow.postFilters[j].columnName);
         }
 
 
