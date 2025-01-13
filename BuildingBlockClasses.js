@@ -2864,7 +2864,7 @@ class NewRecordForm extends Popup {
             let thisInclusion = this.inclusions[i];
 
             if (postFilterColumnNames.includes(thisInclusion.column)) {
-                let index = this.postFilterColumnNames.findIndex((obj) => obj === thisInclusion.column); 
+                let index = postFilterColumnNames.findIndex((obj) => obj === thisInclusion.column); 
                 let newInputField = new AutofilledField();
                 newInputField.setLabel(thisInclusion.displayName);
                 newInputField.setValue(this.parentTableWindow.postFilters[index].columnValue);
