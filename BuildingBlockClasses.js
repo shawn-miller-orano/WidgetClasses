@@ -1994,7 +1994,7 @@ class TableWindowFromLiveTable extends EmptyTableWindow {
         this.parentLiveTable.subscribe((rows) => this.updateTableWindow(rows));
         for (let i = 0; i < this.parentLiveTable.prefilterColumnNames.length; i++) {
             if (this.parentLiveTable.prefilterFunctions[i] == "equal") {
-                addPostRequestFilter(this.parentLiveTable.prefilterColumnNames[i], this.parentLiveTable.prefilterValues[i], "EQUAL");
+                this.addPostRequestFilter(this.parentLiveTable.prefilterColumnNames[i], this.parentLiveTable.prefilterValues[i], "EQUAL");
             }
         }
 
