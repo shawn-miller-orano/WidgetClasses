@@ -1834,6 +1834,10 @@ class Card {
         detailPage.loadCardDatapoints();
     }
 
+    sendIDAsEvent() {
+        fireEvent("TSN", this.targetRow.id.value);
+    }
+
     addButtonFeature(
         title,
         buttonFunctionObject,
@@ -2163,6 +2167,12 @@ class TableWindowFromLiveTable extends EmptyTableWindow {
                     let editButton = new EditRowButton(testCard);
                     testCard.headerEl.appendChild(editButton.el);
                     testCard.buttons.push(editButton);
+                }
+
+                if (this.features.includes("idEventButton")) {
+                    let idEventButton = new SendIDAsEventButton(testCard);
+                    testCard.headerEl.appendChild(idEventButton.el);
+                    testCard.buttons.push(idEventButton);
                 }
 
                 if (this.features.includes("rowDeleteButton")) {
@@ -3597,6 +3607,28 @@ class EditRowButton extends Button {
 
         this.el.style.backgroundColor = "yellow";
         this.setTitle("Edit Record");
+        this.setHeight("35px");
+        this.setWidth("150px");
+
+        this.setUDMArgin("15px");
+    }
+}
+
+
+class SendIDAsEventButton extends Button {
+    constructor(parentCard) {
+        super();
+        this.parentCard = parentCard;
+        //this.subjectRow = this.parentCard.targetRow;
+        this.addFunctionWithParamViaLocation(
+            this.parentCard,
+            "sendIDAsEvent",
+            null,
+            null
+        );
+
+        this.el.style.backgroundColor = "yellow";
+        this.setTitle("Manage");
         this.setHeight("35px");
         this.setWidth("150px");
 
