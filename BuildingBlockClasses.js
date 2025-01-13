@@ -1336,6 +1336,14 @@ class TSN extends LiveRecord {
         this.columns.push(this.masterTraveler);
         this.status = new LiveCell(this.tableKeyCode, "aqtou_status");
         this.columns.push(this.status);
+
+        this.newFormInclusions = [
+            { column: "project", displayName: "Project Number", inputType: "TableDrivenRecordSelect", includeInID: true, multiplicity: false },
+            { column: "masterTraveler", displayName: "Assigned Operator", inputType: "TableDrivenRecordSelect", includeInID: true, multiplicity: false },
+            { column: "status", displayName: "null", inputType: "Autofill", includeInID: false, multiplicity: false, autofillAnswer: "Unreleased" }
+        ]; 
+
+
     }
 }
 
@@ -2657,6 +2665,7 @@ class CustomPage {
     updateBackground(color) {
         if (color != null) {
             if (color.constructor.name == "Color") {
+
                 let rgbaString = "rgba("
                 rgbaString = rgbaString.concat(color.r.value);
                 rgbaString = rgbaString.concat(",");
