@@ -1339,6 +1339,41 @@ class TSN extends LiveRecord {
     }
 }
 
+
+class ProjectMasterTraveler extends LiveRecord {
+    constructor() {
+        super();
+        this.tableKeyCode = "D82HWRJYKxwkfo8jz";
+
+        this.columns = [];
+        this.id = new LiveCell(this.tableKeyCode, "id");
+        this.columns.push(this.id);
+        this.project = new LiveCell(this.tableKeyCode, "kvazl_project");
+        this.columns.push(this.project);
+        this.masterTraveler = new LiveCell(this.tableKeyCode, "etbzb_master_traveler");
+        this.columns.push(this.masterTraveler);
+    }
+}
+
+class MasterTravelerConnection extends LiveRecord {
+    constructor() {
+        super();
+        this.tableKeyCode = "bQCT6NaN6WvWnBp5E";
+
+        this.columns = [];
+        this.id = new LiveCell(this.tableKeyCode, "id");
+        this.columns.push(this.id);
+        this.project = new LiveCell(this.tableKeyCode, "eqehf_project");
+        this.columns.push(this.project);
+        this.masterTraveler = new LiveCell(this.tableKeyCode, "xgomk_master_traveler");
+        this.columns.push(this.masterTraveler);
+        this.prerequisiteMasterTraveler = new LiveCell(this.tableKeyCode, "eohha_prerequisite_master_traveler");
+        this.columns.push(this.prerequisiteMasterTraveler);
+    }
+}
+
+
+
 class MasterTask extends LiveRecord {
     constructor() {
         super();
