@@ -57,7 +57,7 @@ class LiveCell {
         }
         else {
             this.value = newValue;
-            this.emit();
+            //this.emit();
         }
 
     }
@@ -206,10 +206,12 @@ class LiveRecord {
 
     addVars(json) {
         let recordID = json["id"];
+
         for (let i = 0; i < this.columns.length; i++) {
             this.columns[i].pullFromJSON(json);
             this.columns[i].setParentRecordID(recordID);
         }
+
     }
 
     updateVars(json) {
@@ -342,7 +344,7 @@ class LiveUserTable {
 }
 
 class LiveTable {
-    constructor(tableKeyCode, returnRowType,authKey) {
+    constructor(tableKeyCode, returnRowType, authKey) {
         this.activeRows = [];
         this.authKey = authKey;
         this.setReturnType = this.setReturnType.bind(this);
@@ -355,7 +357,7 @@ class LiveTable {
         this.recordChanged = this.recordChanged.bind(this);
         this.addPrefilter = this.addPrefilter.bind(this);
 
-        
+
 
         this.subscribers = [];
 
@@ -388,8 +390,8 @@ class LiveTable {
 
         return null;
     }
-    
-    
+
+
     addPrefilter(prefilterObject) {
         this.prefilterColumnNames.push(prefilterObject.columnName);
         this.prefilterColumnKeys.push(this.testerObject[prefilterObject.columnName].columnKeyCode);
@@ -398,6 +400,7 @@ class LiveTable {
     }
 
     addRecord(recordJSON, rowObject) {
+
         if (this.tableKeyCode != null) {
 
 
@@ -428,6 +431,15 @@ class LiveTable {
 
             //this.tableRequest.responseType = "json";
             tableRequest.send(JSON.stringify(requestBody));
+
+
+            /*
+            tableRequest.onreadystatechange = (e) => {
+                console.log(tableRequest.response);
+            };
+            */
+
+
 
             //this.forceRebuild(updatedValue);
         }
@@ -1109,6 +1121,43 @@ class UniqueValues extends LiveAggregation {
     }
 }
 
+
+
+class HighestValue extends LiveAggregation {
+    constructor(parentLiveTable, columnName) {
+        super(parentLiveTable, columnName);
+        this.aggregate = this.aggregate.bind(this);
+        this.value = 0;
+        //this.parentLiveTable.aggregations.push(this);
+        parentLiveTable.subscribe((rows) => this.aggregate(rows));
+    }
+
+    aggregate(rows) {
+        let highestValue = 0;
+        for (let i = 0; i < rows.length; i++) {
+            let row = rows[i];
+
+            if (row[this.columnName].value > highestValue) {
+                highestValue = row[this.columnName].value;
+
+            } else {
+            }
+        }
+
+        this.updateValue(highestValue);
+    }
+}
+
+
+class HighestID extends HighestValue {
+    constructor(parentLiveTable) {
+        super(parentLiveTable, "id");
+        this.aggregate = this.aggregate.bind(this);
+    }
+}
+
+
+
 class NumberRowsMatchingValue extends LiveAggregation {
     constructor(parentLiveTable, columnName, checkValue) {
         super(parentLiveTable, columnName);
@@ -1339,10 +1388,12 @@ class TSN extends LiveRecord {
         this.columns.push(this.status);
 
         this.newFormInclusions = [
-            { column: "project", displayName: "Project Number", inputType: "TextInput", includeInID: true, multiplicity: false },
-            { column: "masterTraveler", displayName: "Master Traveler", inputType: "TextInput", includeInID: true, multiplicity: false },
+            { column: "project", displayName: "Project Number", inputType: "TextInput", includeInID: false, multiplicity: false },
+            { column: "masterTraveler", displayName: "Master Traveler", inputType: "TextInput", includeInID: false, multiplicity: false },
             { column: "status", displayName: "Status", inputType: "Autofill", includeInID: false, multiplicity: false, autofillAnswer: "Unreleased" }
-        ]; 
+        ];
+
+        this.newRecordIDType = "increment";
 
 
     }
@@ -1990,12 +2041,14 @@ class TableWindowFromLiveTable extends EmptyTableWindow {
 
     setParentLiveTable(parentLiveTable) {
         this.parentLiveTable = parentLiveTable;
-        this.parentLiveTable.subscribe((rows) => this.updateTableWindow(rows));
         for (let i = 0; i < this.parentLiveTable.prefilterColumnNames.length; i++) {
             if (this.parentLiveTable.prefilterFunctions[i] == "equal") {
                 this.addPostRequestFilter(this.parentLiveTable.prefilterColumnNames[i], this.parentLiveTable.prefilterValues[i], "EQUAL");
             }
         }
+
+        this.parentLiveTable.subscribe((rows) => this.updateTableWindow(rows));
+
 
     }
 
@@ -2023,6 +2076,10 @@ class TableWindowFromLiveTable extends EmptyTableWindow {
             var rowValid = true;
             if (rows[i].id.value == null) {
 
+
+                //setTimeout(this.updateTableWindow(rows), 2000);
+
+                rowValid = false;
             }
             else {
                 for (let j = 0; j < this.postFilters.length; j++) {
@@ -2169,6 +2226,8 @@ class TableWindowFromLiveTable extends EmptyTableWindow {
             //this.tableRequest.responseType = "json";
             tableRequest.send(JSON.stringify(requestBody));
 
+
+            t
             //this.forceRebuild(updatedValue);
         }
     }
@@ -2812,6 +2871,7 @@ class NewRecordForm extends Popup {
         this.buildForm = this.buildForm.bind(this);
         this.subChanges = this.subChanges.bind(this);
         this.send = this.send.bind(this);
+        this.setIDValue = this.setIDValue.bind(this);
 
         this.inputFieldEl = document.createElement("div");
         this.mainView.contentBucket.appendChild(this.inputFieldEl);
@@ -2855,7 +2915,7 @@ class NewRecordForm extends Popup {
 
         let postFilterColumnNames = [];
 
-        for(let j = 0; j < this.parentTableWindow.postFilters.length; j++) {
+        for (let j = 0; j < this.parentTableWindow.postFilters.length; j++) {
             postFilterColumnNames.push(this.parentTableWindow.postFilters[j].columnName);
         }
 
@@ -2864,7 +2924,7 @@ class NewRecordForm extends Popup {
             let thisInclusion = this.inclusions[i];
 
             if (postFilterColumnNames.includes(thisInclusion.column)) {
-                let index = postFilterColumnNames.findIndex((obj) => obj === thisInclusion.column); 
+                let index = postFilterColumnNames.findIndex((obj) => obj === thisInclusion.column);
                 let newInputField = new AutofilledField();
                 newInputField.setLabel(thisInclusion.displayName);
                 newInputField.setValue(this.parentTableWindow.postFilters[index].columnValue);
@@ -2941,19 +3001,38 @@ class NewRecordForm extends Popup {
             }
         }
 
-        this.recordJSON["id"] = newID;
+        if (this.record.newRecordIDType) {
+            if (this.record.newRecordIDType == "increment") {
+                this.highestIDAgg = new HighestID(this.parentTableWindow.parentLiveTable);
+                setTimeout(this.setIDValue, 300)
+            }
+        }
+
+        else {
+            this.recordJSON["id"] = newID;
+            this.send();
+            this.close();
+        }
+
 
 
 
         //this.parentWindow.allAssignments.addRecord({ id: newID, oiqoc_task_id: this.subjectRow.id, })
 
+
+    }
+
+    setIDValue() {
+        let value = parseInt(this.highestIDAgg.value) + 1;
+        this.recordJSON["id"] = value.toString();
         this.send();
         this.close();
     }
 
     send() {
-        this.parentTableWindow.parentLiveTable.addRecord(this.recordJSON, this.record);
         this.record.addVars(this.recordJSON);
+        this.parentTableWindow.parentLiveTable.addRecord(this.recordJSON, this.record);
+
 
     }
 }
@@ -3930,5 +4009,3 @@ class MultiSelectFromTabFiltered extends UniqueValueDrivenTabs {
         }
     }
 }
-
-
