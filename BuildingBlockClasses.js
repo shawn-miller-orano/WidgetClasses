@@ -391,7 +391,6 @@ class LiveTable {
     
     
     addPrefilter(prefilterObject) {
-        console.log(this.testerObject[prefilterObject.columnName]);
         this.prefilterColumnNames.push(prefilterObject.columnName);
         this.prefilterColumnKeys.push(this.testerObject[prefilterObject.columnName].columnKeyCode);
         this.prefilterValues.push(prefilterObject.columnValue);
@@ -1342,7 +1341,7 @@ class TSN extends LiveRecord {
         this.newFormInclusions = [
             { column: "project", displayName: "Project Number", inputType: "TextInput", includeInID: true, multiplicity: false },
             { column: "masterTraveler", displayName: "Master Traveler", inputType: "TextInput", includeInID: true, multiplicity: false },
-            { column: "status", displayName: "null", inputType: "Autofill", includeInID: false, multiplicity: false, autofillAnswer: "Unreleased" }
+            { column: "status", displayName: "Status", inputType: "Autofill", includeInID: false, multiplicity: false, autofillAnswer: "Unreleased" }
         ]; 
 
 
@@ -2854,13 +2853,21 @@ class NewRecordForm extends Popup {
             this.record = eval(`new ${this.recordType}();`);
         }
 
+        let postFilterColumnNames = [];
+
+        for(let j = 0; j < this.parentTableWindow.postFilters.length; j++) {
+            postFilterColumnNames.push(this.parentTableWindow.postFilters[i].columnName);
+        }
+
+
         for (let i = 0; i < this.inclusions.length; i++) {
             let thisInclusion = this.inclusions[i];
 
-            if (thisInclusion.column == this.parentTableWindow.postFilters[0].columnName) {
+            if (postFilterColumnNames.includes(thisInclusion.column)) {
+                let index = this.postFilterColumnNames.findIndex((obj) => obj === thisInclusion.column); 
                 let newInputField = new AutofilledField();
                 newInputField.setLabel(thisInclusion.displayName);
-                newInputField.setValue(this.parentTableWindow.postFilters[0].columnValue);
+                newInputField.setValue(this.parentTableWindow.postFilters[index].columnValue);
                 this.inputFieldEl.appendChild(newInputField.el);
                 thisInclusion.inputObject = newInputField;
 
