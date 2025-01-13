@@ -1338,8 +1338,8 @@ class TSN extends LiveRecord {
         this.columns.push(this.status);
 
         this.newFormInclusions = [
-            { column: "project", displayName: "Project Number", inputType: "TableDrivenRecordSelect", includeInID: true, multiplicity: false },
-            { column: "masterTraveler", displayName: "Assigned Operator", inputType: "TableDrivenRecordSelect", includeInID: true, multiplicity: false },
+            { column: "project", displayName: "Project Number", inputType: "TextInput", includeInID: true, multiplicity: false },
+            { column: "masterTraveler", displayName: "Assigned Operator", inputType: "TextInput", includeInID: true, multiplicity: false },
             { column: "status", displayName: "null", inputType: "Autofill", includeInID: false, multiplicity: false, autofillAnswer: "Unreleased" }
         ]; 
 
