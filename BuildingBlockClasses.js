@@ -361,7 +361,8 @@ class LiveTable {
 
         this.aggregations = [];
 
-        this.prefilterColumns = [];
+        this.prefilterColumnNames = [];
+        this.prefilterColumnKeys = [];
         this.prefilterValues = [];
         this.prefilterFunctions = [];
 
@@ -391,7 +392,8 @@ class LiveTable {
     
     addPrefilter(prefilterObject) {
         console.log(this.testerObject[prefilterObject.columnName]);
-        this.prefilterColumns.push(this.testerObject[prefilterObject.columnName].columnKeyCode);
+        this.prefilterColumnNames.push(prefilterObject.columnName);
+        this.prefilterColumnKeys.push(this.testerObject[prefilterObject.columnName].columnKeyCode);
         this.prefilterValues.push(prefilterObject.columnValue);
         this.prefilterFunctions.push(prefilterObject.functionType);
     }
@@ -442,7 +444,7 @@ class LiveTable {
             this.returnRowType,
             this.activeRows,
             this.tableKeyCode,
-            this.prefilterColumns,
+            this.prefilterColumnKeys,
             this.prefilterValues,
             this.prefilterFunctions,
             this
@@ -1339,7 +1341,7 @@ class TSN extends LiveRecord {
 
         this.newFormInclusions = [
             { column: "project", displayName: "Project Number", inputType: "TextInput", includeInID: true, multiplicity: false },
-            { column: "masterTraveler", displayName: "Assigned Operator", inputType: "TextInput", includeInID: true, multiplicity: false },
+            { column: "masterTraveler", displayName: "Master Traveler", inputType: "TextInput", includeInID: true, multiplicity: false },
             { column: "status", displayName: "null", inputType: "Autofill", includeInID: false, multiplicity: false, autofillAnswer: "Unreleased" }
         ]; 
 
@@ -1990,6 +1992,11 @@ class TableWindowFromLiveTable extends EmptyTableWindow {
     setParentLiveTable(parentLiveTable) {
         this.parentLiveTable = parentLiveTable;
         this.parentLiveTable.subscribe((rows) => this.updateTableWindow(rows));
+        for (let i = 0; i < this.parentLiveTable.prefilterColumnNames.length; i++) {
+            if (this.parentLiveTable.prefilterFunctions[i] == "equal") {
+                addPostRequestFilter(this.parentLiveTable.prefilterColumnNames[i], this.parentLiveTable.prefilterValues[i], "EQUAL");
+            }
+        }
 
     }
 
