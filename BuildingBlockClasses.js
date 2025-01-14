@@ -1839,7 +1839,7 @@ class Card {
     }
 
     sendIDAsEvent() {
-        fireEvent("TSN", this.targetRow.id.value);
+        fireEvent("ID", this.targetRow.id.value);
     }
 
     addButtonFeature(
