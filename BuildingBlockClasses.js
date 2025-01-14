@@ -1460,6 +1460,24 @@ class MasterTask extends LiveRecord {
         this.columns.push(this.opFamily);
         this.standardTime = new LiveCell(this.tableKeyCode, "jmixs_standard_time");
         this.columns.push(this.standardTime);
+
+
+        this.newFormInclusions = [
+            { column: "project", displayName: "Project", inputType: "TextInput", includeInID: true, multiplicity: false },
+            { column: "masterTraveler", displayName: "Master Traveler", inputType: "TextInput", includeInID: true, multiplicity: false },
+            { column: "opCode", displayName: "Operation Code", inputType: "TextInput", includeInID: true, multiplicity: false },
+            { column: "desc", displayName: "Description", inputType: "TextInput", includeInID: false, multiplicity: false },
+            { column: "operatingGroup", displayName: "Operating Group", inputType: "TextInput", includeInID: false, multiplicity: false }
+        ];
+
+
+        this.editFormInclusions = [
+            { column: "project", displayName: "Project", inputType: "KeepSame", includeInID: true, multiplicity: false },
+            { column: "masterTraveler", displayName: "Master Traveler", inputType: "KeepSame", includeInID: true, multiplicity: false },
+            { column: "opCode", displayName: "Operation Code", inputType: "TextInput", includeInID: true, multiplicity: false },
+            { column: "desc", displayName: "Description", inputType: "TextInput", includeInID: false, multiplicity: false },
+            { column: "operatingGroup", displayName: "Operating Group", inputType: "TextInput", includeInID: false, multiplicity: false }
+        ];
     }
 }
 
@@ -3041,8 +3059,8 @@ class NewRecordForm extends Popup {
 
             if (thisInclusion.includeInID) {
                 if (thisInclusion.includeInID == true) {
-                    newID = newID.concat("_");
                     newID = newID.concat(this.recordJSON[columnKey]);
+                    newID = newID.concat("_");
                 }
             }
         }
