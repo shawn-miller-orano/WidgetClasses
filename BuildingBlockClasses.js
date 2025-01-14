@@ -2254,6 +2254,19 @@ class TableWindowFromLiveTable extends EmptyTableWindow {
 
     }
 
+    openAddRecordFormWithEvent() {
+        let newAddRecordForm = new NewRecordForm();
+        newAddRecordForm.addFireIDFeature();
+        newAddRecordForm.setRecordType(this.parentLiveTable.returnRowType);
+        newAddRecordForm.setParentLiveTable(this.parentLiveTable);
+        newAddRecordForm.setParentTableWindow(this);
+
+        newAddRecordForm.buildForm();
+
+        newAddRecordForm.open();
+
+    }
+
     setTitle(title) {
         this.title = title;
         this.titleEl.innerHTML = title;
@@ -2314,6 +2327,13 @@ class TableWindowFromLiveTable extends EmptyTableWindow {
         this.titleRow.appendChild(newButton.el);
     }
 
+    addRowAddingButtonWithIDFire() {
+        let newButton = new AddRecordToTableButtonWthEventFiring(this);
+        newButton.setTitle("Add Record");
+        newButton.setWidth("150px");
+        this.titleRow.appendChild(newButton.el);
+    }
+
     addPremadeButtonToSummaryLine(button) {
         this.titleRow.appendChild(button.el);
     }
@@ -2336,6 +2356,11 @@ class TableWindowFromLiveTable extends EmptyTableWindow {
 
         if (this.features.includes("addRowButton")) {
             this.addRowAddingButton();
+        }
+
+        if (this.features.includes("addRowThenFire")) {
+            this.addRowAddingButton();
+
         }
         //this.updateTableWindow(this.currentRows);
     }
@@ -2886,11 +2911,17 @@ class NewRecordForm extends Popup {
         this.inputFieldEl = document.createElement("div");
         this.mainView.contentBucket.appendChild(this.inputFieldEl);
 
+        this.fireIDONSubmit = false;
+
         this.inputFields = [];
     }
 
     setParentRecord(parentRecord) {
         this.parentRecord = parentRecord;
+    }
+
+    addFireIDFeature() {
+        this.fireIDONSubmit = true;
     }
 
     setParentLiveTable(parentLiveTable) {
@@ -3039,9 +3070,17 @@ class NewRecordForm extends Popup {
         this.close();
     }
 
+    fireIDEvent() {
+        fireEvent(this.record.constructor.name, this.record.id.value);
+    }
+
     send() {
         this.record.addVars(this.recordJSON);
         this.parentTableWindow.parentLiveTable.addRecord(this.recordJSON, this.record);
+
+        if (this.fireIDONSubmit == true) {
+            setTimeout(this.fireIDEvent, 250);
+        }
 
 
     }
@@ -3158,6 +3197,9 @@ class SingleMultiplcityRecordGenForm extends NewRecordForm {
         this.close();
     }
 }
+
+
+
 
 
 
@@ -3643,6 +3685,27 @@ class AddRecordToTableButton extends Button {
         this.addFunctionWithParamViaLocation(
             this.tableWindow,
             "openAddRecordForm",
+            null,
+            null
+        );
+
+        this.el.style.backgroundColor = "yellow";
+        this.setTitle("Add Record");
+        this.setHeight("35px");
+        this.setWidth("100px");
+
+        this.setUDMArgin("15px");
+    }
+}
+
+
+class AddRecordToTableButtonWthEventFiring extends Button {
+    constructor(tableWindow) {
+        super();
+        this.tableWindow = tableWindow;
+        this.addFunctionWithParamViaLocation(
+            this.tableWindow,
+            "openAddRecordFormWithEvent",
             null,
             null
         );
