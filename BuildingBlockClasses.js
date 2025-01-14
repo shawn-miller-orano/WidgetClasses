@@ -2359,7 +2359,7 @@ class TableWindowFromLiveTable extends EmptyTableWindow {
         }
 
         if (this.features.includes("addRowThenFire")) {
-            this.addRowAddingButton();
+            this.addRowAddingButtonWithIDFire();
 
         }
         //this.updateTableWindow(this.currentRows);
@@ -2907,6 +2907,7 @@ class NewRecordForm extends Popup {
         this.subChanges = this.subChanges.bind(this);
         this.send = this.send.bind(this);
         this.setIDValue = this.setIDValue.bind(this);
+        this.fireIDEvent = this.fireIDEvent.bind(this);
 
         this.inputFieldEl = document.createElement("div");
         this.mainView.contentBucket.appendChild(this.inputFieldEl);
