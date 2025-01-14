@@ -1412,6 +1412,10 @@ class ProjectMasterTraveler extends LiveRecord {
         this.columns.push(this.project);
         this.masterTraveler = new LiveCell(this.tableKeyCode, "etbzb_master_traveler");
         this.columns.push(this.masterTraveler);
+        this.highLevelCategory = new LiveCell(this.tableKeyCode, "tyetz_high_level_category");
+        this.columns.push(this.highLevelCategory);
+        this.subcategory = new LiveCell(this.tableKeyCode, "forpn_subcategory");
+        this.columns.push(this.subcategory);
     }
 }
 
