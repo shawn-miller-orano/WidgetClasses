@@ -1419,6 +1419,31 @@ class ProjectMasterTraveler extends LiveRecord {
     }
 }
 
+
+class MasterTravelerRevision extends LiveRecord {
+    constructor() {
+        super();
+        this.tableKeyCode = "EeovpeyFunQiLMWkc";
+
+        this.columns = [];
+        this.id = new LiveCell(this.tableKeyCode, "id");
+        this.columns.push(this.id);
+        this.projectMasterTraveler = new LiveCell(this.tableKeyCode, "qykrb_project_master_traveler_id");
+        this.columns.push(this.projectMasterTraveler);
+        this.revisionNumber = new LiveCell(this.tableKeyCode, "xtluu_revision_number");
+        this.columns.push(this.revisionNumber);
+        this.checkerApproved = new LiveCell(this.tableKeyCode, "fgtxv_checker_approved");
+        this.columns.push(this.checkerApproved);
+        this.qaeApproved = new LiveCell(this.tableKeyCode, "unluo_qae_approved");
+        this.columns.push(this.qaeApproved);
+        this.fsmeApproved = new LiveCell(this.tableKeyCode, "ednru_fsme_approved");
+        this.columns.push(this.fsmeApproved);
+
+    }
+}
+
+
+
 class MasterTravelerConnection extends LiveRecord {
     constructor() {
         super();
