@@ -1583,6 +1583,91 @@ class Task extends LiveRecord {
     }
 }
 
+class MasterMaterial extends LiveRecord {
+    constructor() {
+        super();
+        this.tableKeyCode = "xYRNHYndkGJTWBzCH";
+
+        this.columns = [];
+        this.id = new LiveCell(this.tableKeyCode, "id");
+        this.columns.push(this.id);
+        this.project = new LiveCell(this.tableKeyCode, "uirqb_project");
+        this.columns.push(this.project);
+        this.masterTraveler = new LiveCell(this.tableKeyCode, "dnglw_master_traveler");
+        this.columns.push(this.masterTraveler);
+
+        this.materialCode = new LiveCell(this.tableKeyCode, "yzqhr_child_item_id");
+        this.columns.push(this.materialCode);
+        this.materialDescription = new LiveCell(this.tableKeyCode, "trimz_child_item_description");
+        this.columns.push(this.materialDescription);
+
+        this.quantity = new LiveCell(this.tableKeyCode, "ixpsz_child_item_quantity");
+        this.columns.push(this.quantity);
+
+        this.rawMaterialID = new LiveCell(this.tableKeyCode, "mnzrg_raw_matl_part_no");
+        this.columns.push(this.rawMaterialID);
+        this.rawMaterialUnitsPulled = new LiveCell(this.tableKeyCode, "byawp_raw_matl_qty_unit");
+        this.columns.push(this.rawMaterialUnitsPulled);
+
+
+        this.newFormInclusions = [
+            { column: "project", displayName: "Project", inputType: "TextInput", includeInID: true, multiplicity: false },
+            { column: "masterTraveler", displayName: "Master Traveler", inputType: "TextInput", includeInID: true, multiplicity: false },
+            { column: "materialCode", displayName: "Material Code", inputType: "TextInput", includeInID: true, multiplicity: false },
+            { column: "materialDescription", displayName: "Material Description", inputType: "TextInput", includeInID: false, multiplicity: false },
+            { column: "quantity", displayName: "Quantity", inputType: "TextInput", includeInID: false, multiplicity: false },
+            { column: "rawMaterialID", displayName: "Raw Material ID", inputType: "TextInput", includeInID: false, multiplicity: false},
+            { column: "rawMaterialUnitsPulled", displayName: "Raw Material Units Pulled Per Traveler", inputType: "TextInput", includeInID: false, multiplicity: false}
+        ];
+
+
+        this.editFormInclusions = [
+            { column: "project", displayName: "Project", inputType: "KeepSame", includeInID: true, multiplicity: false },
+            { column: "masterTraveler", displayName: "Master Traveler", inputType: "KeepSame", includeInID: true, multiplicity: false },
+            { column: "materialCode", displayName: "Material Code", inputType: "TextInput", includeInID: true, multiplicity: false },
+            { column: "materialDescription", displayName: "Material Description", inputType: "TextInput", includeInID: false, multiplicity: false },
+            { column: "quantity", displayName: "Quantity", inputType: "TextInput", includeInID: false, multiplicity: false },
+            { column: "rawMaterialID", displayName: "Raw Material ID", inputType: "TextInput", includeInID: false, multiplicity: false },
+            { column: "rawMaterialUnitsPulled", displayName: "Raw Material Units Pulled Per Traveler", inputType: "TextInput", includeInID: false, multiplicity: false }
+        ];
+
+
+    }
+}
+
+
+class Material extends LiveRecord {
+    constructor() {
+        super();
+        this.tableKeyCode = "JxP5b7nzWar3nGYyf";
+
+        this.columns = [];
+        this.id = new LiveCell(this.tableKeyCode, "id");
+        this.columns.push(this.id);
+        this.tsn = new LiveCell(this.tableKeyCode, "hltte_parent_traveler");
+        this.columns.push(this.tsn);
+        this.masterMaterial = new LiveCell(this.tableKeyCode, "qltju_parent_master_material");
+        this.columns.push(this.masterMaterial);
+
+        this.sourceID = new LiveCell(this.tableKeyCode, "tcjbj_traveler_serial_rir_heat");
+        this.columns.push(this.sourceID);
+
+        this.newFormInclusions = [
+            { column: "tsn", displayName: "Traveler Serial Number", inputType: "TextInput", includeInID: true, multiplicity: false },
+            { column: "masterMaterial", displayName: "Master Material ID", inputType: "TextInput", includeInID: true, multiplicity: false },
+            { column: "sourceID", displayName: "Source ID", inputType: "TextInput", includeInID: false, multiplicity: false },
+
+        ];
+
+        this.editFormInclusions = [
+            { column: "tsn", displayName: "Traveler Serial Number", inputType: "KeepSame", includeInID: true, multiplicity: false },
+            { column: "masterMaterial", displayName: "Master Material ID", inputType: "KeepSame", includeInID: true, multiplicity: false },
+            { column: "sourceID", displayName: "Source ID", inputType: "TextInput", includeInID: false, multiplicity: false },
+        ];
+
+    }
+}
+
 class PrivilegeDefinition extends LiveRecord {
     constructor() {
         super();
