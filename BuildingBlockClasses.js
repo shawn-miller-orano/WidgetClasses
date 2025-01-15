@@ -1601,13 +1601,13 @@ class MasterMaterial extends LiveRecord {
         this.materialDescription = new LiveCell(this.tableKeyCode, "trimz_child_item_description");
         this.columns.push(this.materialDescription);
 
-        this.quantity = new LiveCell(this.tableKeyCode, "ixpsz_child_item_quantity");
-        this.columns.push(this.quantity);
+        //this.quantity = new LiveCell(this.tableKeyCode, "ixpsz_child_item_quantity");
+        //this.columns.push(this.quantity);
 
         this.rawMaterialID = new LiveCell(this.tableKeyCode, "mnzrg_raw_matl_part_no");
         this.columns.push(this.rawMaterialID);
-        this.rawMaterialUnitsPulled = new LiveCell(this.tableKeyCode, "byawp_raw_matl_qty_unit");
-        this.columns.push(this.rawMaterialUnitsPulled);
+        //this.rawMaterialUnitsPulled = new LiveCell(this.tableKeyCode, "byawp_raw_matl_qty_unit");
+        //this.columns.push(this.rawMaterialUnitsPulled);
 
 
         this.newFormInclusions = [
@@ -1615,9 +1615,9 @@ class MasterMaterial extends LiveRecord {
             { column: "masterTraveler", displayName: "Master Traveler", inputType: "TextInput", includeInID: true, multiplicity: false },
             { column: "materialCode", displayName: "Material Code", inputType: "TextInput", includeInID: true, multiplicity: false },
             { column: "materialDescription", displayName: "Material Description", inputType: "TextInput", includeInID: false, multiplicity: false },
-            { column: "quantity", displayName: "Quantity", inputType: "TextInput", includeInID: false, multiplicity: false },
-            { column: "rawMaterialID", displayName: "Raw Material ID", inputType: "TextInput", includeInID: false, multiplicity: false},
-            { column: "rawMaterialUnitsPulled", displayName: "Raw Material Units Pulled Per Traveler", inputType: "TextInput", includeInID: false, multiplicity: false}
+            //{ column: "quantity", displayName: "Quantity", inputType: "TextInput", includeInID: false, multiplicity: false },
+            { column: "rawMaterialID", displayName: "Raw Material ID", inputType: "TextInput", includeInID: false, multiplicity: false },
+            //{ column: "rawMaterialUnitsPulled", displayName: "Raw Material Units Pulled Per Traveler", inputType: "TextInput", includeInID: false, multiplicity: false }
         ];
 
 
@@ -1626,9 +1626,9 @@ class MasterMaterial extends LiveRecord {
             { column: "masterTraveler", displayName: "Master Traveler", inputType: "KeepSame", includeInID: true, multiplicity: false },
             { column: "materialCode", displayName: "Material Code", inputType: "TextInput", includeInID: true, multiplicity: false },
             { column: "materialDescription", displayName: "Material Description", inputType: "TextInput", includeInID: false, multiplicity: false },
-            { column: "quantity", displayName: "Quantity", inputType: "TextInput", includeInID: false, multiplicity: false },
+            //{ column: "quantity", displayName: "Quantity", inputType: "TextInput", includeInID: false, multiplicity: false },
             { column: "rawMaterialID", displayName: "Raw Material ID", inputType: "TextInput", includeInID: false, multiplicity: false },
-            { column: "rawMaterialUnitsPulled", displayName: "Raw Material Units Pulled Per Traveler", inputType: "TextInput", includeInID: false, multiplicity: false }
+            //{ column: "rawMaterialUnitsPulled", displayName: "Raw Material Units Pulled Per Traveler", inputType: "TextInput", includeInID: false, multiplicity: false }
         ];
 
 
