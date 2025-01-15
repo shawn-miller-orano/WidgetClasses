@@ -1432,11 +1432,11 @@ class MasterTravelerRevision extends LiveRecord {
         this.columns.push(this.projectMasterTraveler);
         this.revisionNumber = new LiveCell(this.tableKeyCode, "xtluu_revision_number");
         this.columns.push(this.revisionNumber);
-        this.checkerApproved = new LiveCell(this.tableKeyCode, "fgtxv_checker_approved");
+        this.checkerApproved = new LiveCell(this.tableKeyCode, "lgplj_checker_approved");
         this.columns.push(this.checkerApproved);
-        this.qaeApproved = new LiveCell(this.tableKeyCode, "unluo_qae_approved");
+        this.qaeApproved = new LiveCell(this.tableKeyCode, "ocjxd_qae_approved_string");
         this.columns.push(this.qaeApproved);
-        this.fsmeApproved = new LiveCell(this.tableKeyCode, "ednru_fsme_approved");
+        this.fsmeApproved = new LiveCell(this.tableKeyCode, "pbtvd_fsme_approved");
         this.columns.push(this.fsmeApproved);
 
     }
